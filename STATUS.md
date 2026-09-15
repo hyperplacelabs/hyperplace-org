@@ -3,24 +3,49 @@
 Last updated: 2026-09-15. See `hyperplaceorg-landing-brief.md` and
 `hyperplaceorg-setup.md` for the source brief and setup notes this tracks.
 
-## Blocked
+## Figma (resolved 2026-09-16)
 
-**Figma MCP is not connected in this session.** `claude mcp list` shows only
-an unauthenticated `dune` connector — no Figma server registered, despite it
-being installed in VS Code. This blocks reading the actual design (file
-`hyperplace`, page `dotorg`, frames "Mobile 390" / "Tablet 768" / "Desktop
-1440"): typeface family, type scale, spacing, colour, exact copy and layout.
+Figma MCP is now connected. Read file `hyperplace`, page `dotorg`, all
+three frames: Mobile 390 (node `451:3`), Tablet 768 (node `2001:7`),
+Desktop 1440 (node `2001:9`), file key `fmojNgXWt2rhZsaGQ28fBK`.
 
-Until this is fixed, `public/index.html` / `public/css/style.css` are a
-**placeholder**: real content from the brief, but system-font styling, not
-the Figma design. Do not treat the current visual design as final. Once
-Figma access works, re-read the three frames and rebuild the CSS/markup
-against them, then self-host the correct Fontshare (or Bunny) family in
-`public/fonts/` — do not use Google Fonts.
+**That Figma file is a low-fidelity wireframe**, not a finished design:
+placeholder lorem ipsum copy, no design tokens/variables defined
+(`get_variable_defs` returned empty), and no protocol/repo link list, MIT
+line, or Bluesky link — just a wordmark, one tagline/home link, one body
+paragraph, a hairline rule, and one footer line, repeated near-identically
+across breakpoints with a lot of deliberate vertical whitespace.
 
-Fix path: restart/reconnect the Figma MCP server in VS Code, or run
-`claude mcp list` there to confirm it's registered, then re-open this
-conversation.
+What was taken directly from Figma and implemented as-is:
+- Typeface **Archivo**, weight 300 (mobile) / 200 (tablet+desktop),
+  self-hosted (downloaded from Bunny Fonts' CDN once, not loaded from it
+  at runtime) as `public/fonts/archivo-{200,300}.woff2` + `OFL.txt`.
+- Sizes: 21px on mobile, 48px on tablet and desktop, for all text.
+- Colour: black text on white, with a single accent colour — pure
+  `#00FF00` — used consistently for every link-styled element across all
+  three frames. Kept as-is despite being an unusual choice, since it's
+  deliberate and consistent, not a one-off.
+- A left-aligned content column (~798px), not centred, with large
+  right-hand whitespace on desktop — kept rather than centring the page.
+- The single 1px black hairline rule (reproduced as a CSS border, not an
+  image — the exported asset was a trivial straight line).
+
+What was **added**, not in the Figma file, because CLAUDE.md's content
+constraints require it regardless: the protocol contract / lab notes /
+source repo / spec link list, and the MIT + "build on it" + Bluesky line
+folded into the footer. Styled in the same type system (same font, same
+per-breakpoint size, the same accent colour for links) so it reads as part
+of the existing system rather than a bolted-on addition. Revisit this
+once a fuller Figma pass exists — these elements may get their own
+treatment then.
+
+One implementation note for whoever touches this next: Figma's exported
+reference code applied `line-height: 28px` literally to every single-line
+text node, including the 48px ones. Applied verbatim in flow CSS that
+causes stacked lines to overlap — it's a Figma-internal box value, not a
+deliberate 28px line box at 48pt type. Line-heights in `style.css` were
+derived from the actual Y-coordinate gaps between elements instead; don't
+reintroduce the raw 28px value at the larger sizes.
 
 ## hyperplace.org — infrastructure (verified 2026-09-15)
 
@@ -154,13 +179,23 @@ lab tidy happens.
 
 ## Open items / next steps
 
-1. Fix Figma MCP access (blocks real .org design).
-2. `vercel link` + `vercel git connect` the hyperplace-org project to
-   `hyperplacelabs/hyperplace-org`, then push this repo's initial commit.
-3. Confirm before pushing the Marta-pause commit to `hyperplacexyz` (public
+1. Confirm before pushing the Marta-pause commit to `hyperplacexyz` (public
    site — needs explicit go-ahead, not just local changes).
-4. Once .org is live: revisit hyperplace.xyz's own "dotxyz" Figma page for
-   its real design (currently a system-font placeholder).
-5. Fix the broken protocol-page GitHub link in `hyperplace-lab` before the
+2. Once .org is live: revisit hyperplace.xyz's own "dotxyz" Figma page for
+   its real design (currently a system-font placeholder in `hyperplacexyz`).
+3. Fix the broken protocol-page GitHub link in `hyperplace-lab` before the
    NLnet submission.
-6. Decide the mailing-list question (Option A vs B) — parked, not blocking.
+4. Decide the mailing-list question (Option A vs B) — parked, not blocking.
+5. When the Figma file gets a fuller pass (real copy instead of lorem
+   ipsum, the link list/MIT/Bluesky elements designed rather than
+   improvised), re-read it and reconcile — see the "Figma" section above
+   for exactly what was literal vs. added.
+
+## Done
+
+- hyperplace.org scaffolded, pushed, deployed, Vercel↔GitHub connected.
+- Domains + DNS verified correct (grey-cloud Cloudflare, Vercel-issued TLS).
+- Real Figma design (all three breakpoints) implemented and screenshot-
+  verified locally at 390/768/1440px with Playwright.
+- Marta paused locally in `hyperplacexyz` (not yet pushed).
+- Signup backend documented for later revival.
