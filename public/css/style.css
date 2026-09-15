@@ -1,13 +1,10 @@
 /*
   Typography and layout from Figma file "hyperplace", page "dotorg"
   (frames Mobile 390 / Tablet 768 / Desktop 1440, read 2026-09-16).
-  That file is a low-fidelity wireframe: placeholder lorem ipsum, no
-  protocol/repo link list yet. Structure, type (Archivo 200/300), sizes
-  (21px mobile, 48px tablet+desktop), the black/white/#00FF00 palette and
-  the single hairline rule are taken from it as-is; the link list and
-  footer framing (MIT, build-on-it, Bluesky) are added to meet the
-  brief's content requirements, styled in the same system. Revisit once
-  a fuller Figma pass exists. See STATUS.md.
+  Structure, type (Archivo 200/300), sizes (21px mobile, 48px
+  tablet+desktop), the black/white/#00FF00 palette and the single
+  hairline rule are taken from it as-is. See STATUS.md for the fuller
+  design notes.
 */
 
 @font-face {
@@ -108,34 +105,6 @@ main {
   max-width: 60ch;
 }
 
-.links {
-  list-style: none;
-  margin: 0 0 32px;
-  padding: 0;
-  font-size: 21px;
-  font-weight: 300;
-  line-height: 1.4;
-}
-
-.links li {
-  margin-bottom: 8px;
-}
-
-.links a {
-  color: var(--accent);
-  text-decoration: none;
-}
-
-.links a:hover,
-.links a:focus-visible {
-  text-decoration: underline;
-}
-
-.links .muted {
-  color: var(--fg);
-  opacity: 0.5;
-}
-
 .rule {
   border: none;
   border-top: 1px solid var(--rule);
@@ -147,24 +116,6 @@ main {
   font-size: 21px;
   font-weight: 300;
   line-height: 1.3;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 8px 24px;
-}
-
-.site-footer a {
-  color: var(--fg);
-  text-decoration: none;
-}
-
-.site-footer a:hover,
-.site-footer a:focus-visible {
-  text-decoration: underline;
-}
-
-.site-footer .bsky {
-  color: var(--accent);
 }
 
 @media (min-width: 768px) {
@@ -176,10 +127,31 @@ main {
     gap: 8px;
   }
 
+  /*
+    Below 768px, main stretches (flex:1) and pins its content to the
+    bottom of the viewport via justify-content:flex-end — on a short
+    phone screen that reads as one intentional gap under the title.
+    On a tall/wide tablet or desktop window the same trick creates a
+    disproportionate void and strands the paragraph far from the title.
+    So here main goes back to normal block flow, and .lede gets its own
+    bounded top margin instead — a defined "space below the title" that
+    doesn't grow unbounded with viewport height. Whatever's left over
+    still separates the content from the footer, which stays pinned to
+    the bottom via main's flex:1.
+  */
+  main {
+    display: block;
+  }
+
+  .lede {
+    margin-top: clamp(64px, 12vh, 180px);
+    line-height: 1.4;
+    margin-bottom: 56px;
+  }
+
   .wordmark,
   .home-link,
   .lede,
-  .links,
   .site-footer {
     font-size: 48px;
   }
@@ -191,17 +163,6 @@ main {
 
   body {
     font-weight: 200;
-  }
-
-  .lede {
-    line-height: 1.4;
-    margin-bottom: 56px;
-  }
-
-  .links {
-    font-weight: 200;
-    line-height: 1.3;
-    margin-bottom: 56px;
   }
 
   .site-footer {

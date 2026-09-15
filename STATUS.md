@@ -1,6 +1,6 @@
 # Status: hyperplace.org / hyperplace.xyz build
 
-Last updated: 2026-09-15. See `hyperplaceorg-landing-brief.md` and
+Last updated: 2026-09-16. See `hyperplaceorg-landing-brief.md` and
 `hyperplaceorg-setup.md` for the source brief and setup notes this tracks.
 
 ## Figma (resolved 2026-09-16)
@@ -30,14 +30,35 @@ What was taken directly from Figma and implemented as-is:
 - The single 1px black hairline rule (reproduced as a CSS border, not an
   image — the exported asset was a trivial straight line).
 
-What was **added**, not in the Figma file, because CLAUDE.md's content
-constraints require it regardless: the protocol contract / lab notes /
-source repo / spec link list, and the MIT + "build on it" + Bluesky line
-folded into the footer. Styled in the same type system (same font, same
-per-breakpoint size, the same accent colour for links) so it reads as part
-of the existing system rather than a bolted-on addition. Revisit this
-once a fuller Figma pass exists — these elements may get their own
-treatment then.
+An initial pass also added a protocol/repo link list and an MIT +
+"build on it" + Bluesky line to the footer, since CLAUDE.md's content
+constraints call for them. **The founder then explicitly asked to remove
+all of that** (2026-09-16) and simplify the copy — see "Content, round 2"
+below. So as of now the page deliberately does **not** carry the protocol
+contract, lab notes, source repo, spec, or Bluesky links CLAUDE.md
+describes. That's a live decision, not an oversight: flagging it here so
+it isn't silently reintroduced, and flagging to the founder that CLAUDE.md
+itself is now stale on this point and could use an update if this
+direction sticks.
+
+## Content, round 2 (2026-09-16, founder-directed)
+
+- Lede copy changed to: "An open, self-sovereign spatial identity
+  primitive. Discover ways of experiencing place as a pattern."
+- Removed entirely: the protocol contract / protocol notes / source / spec
+  link list, and the Bluesky link.
+- Footer simplified from "hyperplace.org — open, build on it" to just
+  "hyperplace.org".
+- Fixed a real layout issue: tablet/desktop used the same
+  `justify-content: flex-end` trick as mobile to pin content near the
+  bottom of the viewport. On a short phone screen that reads as one
+  contained gap under the title; on a tall/wide tablet or desktop window
+  it produced a disproportionate void and stranded the paragraph far from
+  the title, especially once the page got shorter. Fixed by giving
+  `main` normal block flow at 768px+ and a bounded `margin-top` (`clamp(64px,
+  12vh, 180px)`) on `.lede` instead — a defined "space below the title"
+  that doesn't grow unbounded with viewport height. Mobile (<768px) is
+  untouched. Screenshot-verified at 390×844 / 768×1024 / 1440×900.
 
 One implementation note for whoever touches this next: Figma's exported
 reference code applied `line-height: 28px` literally to every single-line
