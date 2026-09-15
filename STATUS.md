@@ -227,8 +227,24 @@ superseded. Implemented as:
 - Verified with `npm run build` + Playwright screenshots at
   390×844 / 768×1024 / 1440×900, then pushed and confirmed live.
 
-This means .xyz no longer needs its own "dotxyz" Figma pass for now —
-park that unless/until the founder wants .xyz to diverge from .org again.
+**Correction, same day**: a `dotxyz` Figma page does exist (file
+`hyperplace`) — it just didn't show up via `get_metadata` until given a
+direct node-specific URL (`node-id=2033-107`; the earlier top-level page
+listing only ever returned `dotorg`, cause unclear). So the "mirror .org
+exactly, including colour" implementation above was wrong on one point:
+read `dotxyz` (frames at nodes `2033:108`/`2033:129`/`2033:139` for
+Mobile/Tablet/Desktop) and it specifies its **own** palette — `#002BFF`
+background, white text, `#FF8000` accent (not .org's black/white/#00FF00)
+— and wordmark "Hyperplace Labs" (not "Hyperplace"), consistent across
+all three of its frames and matching this domain's existing branding
+(README, page `<title>`). `page.module.css` updated accordingly; layout,
+type and copy are still identical to .org, only colour and the wordmark
+string differ. Screenshot-verified and live.
+
+If anyone needs to re-check the Figma file structure: pass a direct
+node-specific URL to `get_metadata`/`get_design_context` rather than
+relying on the top-level page listing, since that listing under-reported
+pages here for reasons that weren't tracked down.
 
 ## Lab protocol link — fixed in git, not yet deployed (2026-09-16)
 
