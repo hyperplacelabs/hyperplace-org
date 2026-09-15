@@ -54,11 +54,31 @@ direction sticks.
   bottom of the viewport. On a short phone screen that reads as one
   contained gap under the title; on a tall/wide tablet or desktop window
   it produced a disproportionate void and stranded the paragraph far from
-  the title, especially once the page got shorter. Fixed by giving
-  `main` normal block flow at 768px+ and a bounded `margin-top` (`clamp(64px,
-  12vh, 180px)`) on `.lede` instead — a defined "space below the title"
-  that doesn't grow unbounded with viewport height. Mobile (<768px) is
-  untouched. Screenshot-verified at 390×844 / 768×1024 / 1440×900.
+  the title, especially once the page got shorter. First fix: gave `main`
+  normal block flow at 768px+ with a bounded `margin-top` on `.lede`
+  instead of flex-end.
+
+## Content, round 3 (2026-09-16, founder-directed)
+
+Founder asked to drop the Figma-specified 48px/weight-200 type for
+tablet+desktop entirely and reuse mobile's 21px/weight-300 sizing and
+spacing at every breakpoint — only the container's side padding (`--gutter`)
+and max column width still scale up with viewport width, for line length.
+
+This actually **resolved the round-2 spacing fix's original motivation**:
+the disproportionate-void problem was largely a function of 48px type not
+filling a tablet/desktop viewport proportionally the way it does on a
+phone. With matching 21px type at every breakpoint, content-to-viewport
+proportions land close to mobile's own (~60-70% void either way), so the
+`justify-content: flex-end` bottom-anchor was reinstated for all
+breakpoints — the round-2 `display:block` + bounded `margin-top` override
+was removed as no longer needed. Screenshot-verified at
+390×844 / 768×1024 / 1440×900; all three now look like the same design at
+different widths, per the founder's ask.
+
+Net effect: **the tablet/desktop frames in Figma no longer match the
+built site** on type size/weight. Deliberate, founder-directed — flagging
+so it isn't "fixed" back to the Figma spec without checking first.
 
 One implementation note for whoever touches this next: Figma's exported
 reference code applied `line-height: 28px` literally to every single-line
