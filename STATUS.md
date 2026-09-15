@@ -246,37 +246,37 @@ node-specific URL to `get_metadata`/`get_design_context` rather than
 relying on the top-level page listing, since that listing under-reported
 pages here for reasons that weren't tracked down.
 
-## Lab protocol link — fixed in git, not yet deployed (2026-09-16)
+## Lab protocol link — fixed, deployed, verified live (2026-09-16)
 
 `hyperplacexyz/hyperplace-lab/protocol/index.html:275` linked to
 `github.com/hyperplace-xyz/contracts/PlaceRegistry.sol` (private, 404s for
 visitors). Now points to
 `github.com/hyperplacelabs/hyperplace-protocol/blob/main/contracts/PlaceRegistry.sol`
-(verified 200). Committed and pushed to `hyperplacexyz` for history.
+(verified 200). Committed to `hyperplacexyz` for history.
 
-**Deploy note**: `hyperplace-lab/` is plain static HTML with its own
-Vercel project (`hyperplace-lab`, separate `.vercel/project.json`), not
-built from git pushes — its git-triggered auto-deploys have been failing
-for 90+ days (tries to build the whole Next.js app from the repo root and
-errors on a missing Supabase env var; pre-existing, unrelated to this
-change). The real deploy path is `cd hyperplace-lab && vercel --prod`,
-which the auto-mode classifier blocked as a direct-production-push action
-needing explicit sign-off. **Not yet deployed live** — needs someone to
-run that command (or grant permission) to actually update
-`lab.hyperplace.xyz/protocol`.
+**Deploy note for next time**: `hyperplace-lab/` is plain static HTML
+with its own Vercel project (`hyperplace-lab`, separate
+`.vercel/project.json`), not built from git pushes — its git-triggered
+auto-deploys have been failing for 90+ days (tries to build the whole
+Next.js app from the repo root and errors on a missing Supabase env var;
+pre-existing, unrelated to this change). The real deploy path is `cd
+hyperplace-lab && vercel --prod --scope hyperplacelab`, which the
+auto-mode classifier blocks as a direct-production-push action — the
+founder ran it manually from their own terminal. Confirmed live via
+`curl https://lab.hyperplace.xyz/protocol`.
 
 ## Open items / next steps
 
-1. **Deploy the lab link fix** — run `cd hyperplacexyz/hyperplace-lab &&
-   vercel --prod --scope hyperplacelab` (blocked by the auto-mode
-   classifier as a direct production push; needs the founder to run it or
-   grant permission). Fix is committed to git already, just not live.
-2. Mailing-list question (Option A vs B) — explicitly parked by the
+Everything from the "main objective" (quiet .xyz landing page + Marta
+mothballed) and the staged plan in `hyperplaceorg-setup.md` is done as of
+2026-09-16. What's left is all explicitly parked, not blocking:
+
+1. Mailing-list question (Option A vs B) — explicitly parked by the
    founder (2026-09-16), pick up later.
-3. hyperplace.xyz's own distinct design ("dotxyz" Figma page) is on hold
-   indefinitely now that .xyz deliberately mirrors .org — only revisit if
-   the founder wants them to diverge again.
-4. When the .org Figma file gets a fuller pass (real copy instead of
+2. hyperplace.xyz's own distinct design is on hold indefinitely now that
+   .xyz deliberately mirrors .org's layout/type (with its own `dotxyz`
+   colours) — only revisit if the founder wants deeper divergence.
+3. When the .org Figma file gets a fuller pass (real copy instead of
    lorem ipsum), re-read and reconcile — note the founder has already
    diverged from it twice (dropped the link list/MIT/Bluesky content, and
    unified type size across breakpoints rather than the 48px tablet/desktop
@@ -290,9 +290,10 @@ run that command (or grant permission) to actually update
   feedback (copy/links trimmed, type unified across breakpoints).
   Screenshot-verified at 390/768/1440px with Playwright throughout.
 - Marta mothballed and pushed live on `hyperplace.xyz`.
-- hyperplace.xyz homepage now mirrors hyperplace.org exactly (content,
-  type, layout), pushed live. `/research` and `/privacy` untouched.
+- hyperplace.xyz homepage mirrors hyperplace.org's layout/content, with
+  `dotxyz`'s own colour scheme (#002BFF/white/#FF8000) and "Hyperplace
+  Labs" wordmark. Pushed live. `/research` and `/privacy` untouched.
 - Signup backend (Vercel functions, Supabase, Resend, keepalive cron)
   preserved and documented for later revival.
-- Broken `lab.hyperplace.xyz/protocol` GitHub link fixed in git (deploy
-  still pending, see Open items above).
+- Broken `lab.hyperplace.xyz/protocol` GitHub link fixed, deployed by the
+  founder, and verified live (see "Lab protocol link" above).
