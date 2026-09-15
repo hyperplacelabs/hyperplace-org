@@ -38,20 +38,30 @@ include the Fontshare licence file, write `@font-face` + preload by hand.
 
 - No signup wall, no marketing copy, no AI concierge anywhere on this
   domain.
-- Links out to: the protocol contract on Base, `lab.hyperplace.xyz/protocol`,
-  the public repo `github.com/hyperplacelabs/hyperplace-protocol`, and the
-  spec once it exists.
-- MIT / open-licence framing, "build on it" invitation.
 - Lead with the primitive and the commons — not commercial framing, not AI.
+
+**Stale as of 2026-09-16**: this section originally also required a link
+list (protocol contract, `lab.hyperplace.xyz/protocol`, the public repo,
+the spec) and MIT/"build on it" framing. The founder explicitly asked to
+remove all of that and simplify to just the one-line description — see
+STATUS.md "Content, round 2". Left here as the brief's original intent in
+case that direction reverses (e.g. before the NLnet submission, which
+does cite this domain), but don't reintroduce those links without
+checking with the founder first.
+
+Similarly, current copy/type deliberately diverge from the Figma "dotorg"
+frames on two points — see STATUS.md "Content, round 2" and "round 3" for
+what and why before treating the frames as current spec.
 
 ## Related repos (not this one)
 
 - `~/Projects/hyperplace/hyperplacexyz` — the Next.js app behind
-  hyperplace.xyz. Currently being converted from the Marta concierge to a
-  minimal holding page; its signup backend (Vercel functions + Supabase +
-  Resend) is preserved and documented in this repo's `STATUS.md`, not
-  deleted. Live production site — never push there without explicit
-  confirmation first.
+  hyperplace.xyz. Marta is mothballed (pushed live 2026-09-16); the
+  homepage now deliberately mirrors this repo's page exactly (content,
+  type, layout — see STATUS.md). Its signup backend (Vercel functions +
+  Supabase + Resend) is preserved and documented in this repo's
+  `STATUS.md`, not deleted. Live production site — treat pushes there
+  with the same care as this repo, confirming non-trivial changes first.
 - `hyperplacelabs/hyperplace-protocol` — the public contract repo linked
   from this site.
 

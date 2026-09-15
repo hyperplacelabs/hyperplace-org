@@ -123,15 +123,12 @@ interactivity, plain HTML/CSS is also simply less machinery. Revisit if a
 second page (e.g. a rendered spec) later makes a static-site generator
 worth the setup cost.
 
-## hyperplace.xyz — Marta pause
+## hyperplace.xyz — Marta pause (pushed live 2026-09-16, see below)
 
 Working directory: `~/Projects/hyperplace/hyperplacexyz` (separate repo,
 `hyperplacelabs/hyperplace-xyz`, live at `https://www.hyperplace.xyz`).
 
-**Not yet pushed** — changes are local only pending explicit confirmation,
-because this repo is live and pushing to `main` redeploys the public site.
-
-What changed locally:
+What changed:
 - `app/page.tsx` now renders a minimal holding page instead of
   `<ConciergeShell />`.
 - Marta's UI components (`components/ConciergeShell.tsx`,
@@ -200,43 +197,86 @@ backend) vs Option B (skip it, use Bluesky/GitHub for updates) — founder's
 own note is that Option B is likely the sensible default until there's an
 audience. No action taken either way; the backend above is just preserved.
 
-## hyperplace.xyz — page.tsx replacement content
+## hyperplace.xyz — Marta pushed live (2026-09-16)
 
-Placeholder holding page: name, one-line descriptor, links to
-`hyperplace.org` and `lab.hyperplace.xyz`. Same caveat as the .org page —
-styled with system fonts for now, not the Figma "dotxyz" design (deferred
-per the brief: ".xyz build deferred", tackled after .org).
+The Marta-pause commit was pushed and is live at `www.hyperplace.xyz`.
+`hyperplacexyz`'s `origin` remote was stale (pointed at
+`hyperplacexyz.git`; actual repo is `hyperplacelabs/hyperplace-xyz`,
+hyphenated) — fixed before pushing.
 
-## Known separate issue (flagged in `hyperplaceorg-setup.md`, not yet fixed)
+Founder then asked (2026-09-16) for the .xyz homepage to have the exact
+same content and layout as .org, not a separate design — so the earlier
+"placeholder holding page" plan (own copy, links to .org/lab) is
+superseded. Implemented as:
 
-`hyperplacexyz/hyperplace-lab/protocol/index.html:275` links to
-`github.com/hyperplace-xyz/contracts/PlaceRegistry.sol`, which is private
-and 404s for visitors. Should point to
-`github.com/hyperplacelabs/hyperplace-protocol`. This is a different Vercel
-deploy target (`hyperplace-lab`, its own `.vercel` folder) from both repos
-above — setup.md flags this as submission-hygiene for the NLnet
-application, worth fixing before 3 November regardless of when the wider
-lab tidy happens.
+- `app/page.tsx` + new `app/page.module.css` (Next.js app router, CSS
+  Modules) reproduce the .org static page's markup, Archivo type, and
+  spacing exactly — only the self-referential text differs
+  ("hyperplace.xyz" instead of "hyperplace.org", both in the header
+  home-link and the footer). Fonts copied into
+  `hyperplacexyz/public/fonts/` (same self-hosted Archivo 200/300 files
+  as the .org repo).
+- Scoped to this one route via a CSS Module so `/research` and
+  `/privacy` (both still live per the earlier decision) keep the
+  existing IBM Plex Sans / cream house style in `globals.css`, untouched.
+- Fixed a real bug found in the process: `globals.css`'s `html, body`
+  rule had no `margin: 0`. Invisible on the cream pages (default browser
+  body margin blends into the cream background) but showed as a visible
+  border around this page's full-bleed white background. Fixed globally;
+  verified no regression on `/research` and `/privacy` via screenshots.
+- Verified with `npm run build` + Playwright screenshots at
+  390×844 / 768×1024 / 1440×900, then pushed and confirmed live.
+
+This means .xyz no longer needs its own "dotxyz" Figma pass for now —
+park that unless/until the founder wants .xyz to diverge from .org again.
+
+## Lab protocol link — fixed in git, not yet deployed (2026-09-16)
+
+`hyperplacexyz/hyperplace-lab/protocol/index.html:275` linked to
+`github.com/hyperplace-xyz/contracts/PlaceRegistry.sol` (private, 404s for
+visitors). Now points to
+`github.com/hyperplacelabs/hyperplace-protocol/blob/main/contracts/PlaceRegistry.sol`
+(verified 200). Committed and pushed to `hyperplacexyz` for history.
+
+**Deploy note**: `hyperplace-lab/` is plain static HTML with its own
+Vercel project (`hyperplace-lab`, separate `.vercel/project.json`), not
+built from git pushes — its git-triggered auto-deploys have been failing
+for 90+ days (tries to build the whole Next.js app from the repo root and
+errors on a missing Supabase env var; pre-existing, unrelated to this
+change). The real deploy path is `cd hyperplace-lab && vercel --prod`,
+which the auto-mode classifier blocked as a direct-production-push action
+needing explicit sign-off. **Not yet deployed live** — needs someone to
+run that command (or grant permission) to actually update
+`lab.hyperplace.xyz/protocol`.
 
 ## Open items / next steps
 
-1. Confirm before pushing the Marta-pause commit to `hyperplacexyz` (public
-   site — needs explicit go-ahead, not just local changes).
-2. Once .org is live: revisit hyperplace.xyz's own "dotxyz" Figma page for
-   its real design (currently a system-font placeholder in `hyperplacexyz`).
-3. Fix the broken protocol-page GitHub link in `hyperplace-lab` before the
-   NLnet submission.
-4. Decide the mailing-list question (Option A vs B) — parked, not blocking.
-5. When the Figma file gets a fuller pass (real copy instead of lorem
-   ipsum, the link list/MIT/Bluesky elements designed rather than
-   improvised), re-read it and reconcile — see the "Figma" section above
-   for exactly what was literal vs. added.
+1. **Deploy the lab link fix** — run `cd hyperplacexyz/hyperplace-lab &&
+   vercel --prod --scope hyperplacelab` (blocked by the auto-mode
+   classifier as a direct production push; needs the founder to run it or
+   grant permission). Fix is committed to git already, just not live.
+2. Mailing-list question (Option A vs B) — explicitly parked by the
+   founder (2026-09-16), pick up later.
+3. hyperplace.xyz's own distinct design ("dotxyz" Figma page) is on hold
+   indefinitely now that .xyz deliberately mirrors .org — only revisit if
+   the founder wants them to diverge again.
+4. When the .org Figma file gets a fuller pass (real copy instead of
+   lorem ipsum), re-read and reconcile — note the founder has already
+   diverged from it twice (dropped the link list/MIT/Bluesky content, and
+   unified type size across breakpoints rather than the 48px tablet/desktop
+   spec) — see "Figma", "Content round 2" and "Content round 3" above.
 
 ## Done
 
 - hyperplace.org scaffolded, pushed, deployed, Vercel↔GitHub connected.
 - Domains + DNS verified correct (grey-cloud Cloudflare, Vercel-issued TLS).
-- Real Figma design (all three breakpoints) implemented and screenshot-
-  verified locally at 390/768/1440px with Playwright.
-- Marta paused locally in `hyperplacexyz` (not yet pushed).
-- Signup backend documented for later revival.
+- Real Figma design implemented, then simplified twice per founder
+  feedback (copy/links trimmed, type unified across breakpoints).
+  Screenshot-verified at 390/768/1440px with Playwright throughout.
+- Marta mothballed and pushed live on `hyperplace.xyz`.
+- hyperplace.xyz homepage now mirrors hyperplace.org exactly (content,
+  type, layout), pushed live. `/research` and `/privacy` untouched.
+- Signup backend (Vercel functions, Supabase, Resend, keepalive cron)
+  preserved and documented for later revival.
+- Broken `lab.hyperplace.xyz/protocol` GitHub link fixed in git (deploy
+  still pending, see Open items above).
